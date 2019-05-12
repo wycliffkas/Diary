@@ -22,6 +22,7 @@ public class NoteActivity extends AppCompatActivity {
     private boolean mIsNewNote;
     private EditText textNoteTitle;
     private EditText textNoteText;
+    private int notePosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,10 +44,30 @@ public class NoteActivity extends AppCompatActivity {
         textNoteTitle = findViewById(R.id.text_note_title);
         textNoteText = findViewById(R.id.text_note_text);
 
-        if(!mIsNewNote)
+        if(mIsNewNote) {
+            createNewNote();
+        } else {
             displayNote(spinnerCourses, textNoteText, textNoteTitle);
+        }
 
+    }
 
+    private void createNewNote() {
+        DataManager dm = DataManager.getInstance();
+        notePosition = dm.createNewNote();
+        mNote = dm.getNotes().get(notePosition);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        saveNote();
+    }
+
+    private void saveNote() {
+        mNote.setCourse((CourseInfo) spinnerCourses.getSelectedItem());
+        mNote.setTitle(textNoteTitle.getText().toString());
+        mNote.setText(textNoteText.getText().toString());
     }
 
     private void displayNote(Spinner spinnerCourses, EditText textNoteText, EditText textNoteTitle) {
