@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by Jim.
  */
 
-public final class ModuleInfo implements Parcelable{
+public final class ModuleInfo implements Parcelable {
     private final String mModuleId;
     private final String mTitle;
     private boolean mIsComplete = false;
@@ -22,12 +22,10 @@ public final class ModuleInfo implements Parcelable{
         mIsComplete = isComplete;
     }
 
-    public ModuleInfo(Parcel source) {
+    private ModuleInfo(Parcel source) {
         mModuleId = source.readString();
         mTitle = source.readString();
         mIsComplete = source.readByte() == 1;
-
-
     }
 
     public String getModuleId() {
@@ -75,11 +73,11 @@ public final class ModuleInfo implements Parcelable{
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(mModuleId);
         dest.writeString(mTitle);
-        dest.writeByte((byte) (mIsComplete? 1 : 0));
+        dest.writeByte((byte)(mIsComplete ? 1 : 0));
     }
 
-    public final static Parcelable.Creator<ModuleInfo> CREATOR =
-            new Parcelable.Creator<ModuleInfo> () {
+    public static final Parcelable.Creator<ModuleInfo> CREATOR =
+            new Parcelable.Creator<ModuleInfo>() {
 
                 @Override
                 public ModuleInfo createFromParcel(Parcel source) {
@@ -91,4 +89,5 @@ public final class ModuleInfo implements Parcelable{
                     return new ModuleInfo[size];
                 }
             };
+
 }

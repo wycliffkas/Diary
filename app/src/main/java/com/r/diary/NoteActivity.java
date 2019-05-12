@@ -1,17 +1,27 @@
 package com.r.diary;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 
 import java.util.List;
 
+
 public class NoteActivity extends AppCompatActivity {
-    Spinner spinnerCourses;
+    public static final String NOTE_POSITION = "com.r.diary.POSITION";
+    public static final int POSITION_NOT_SET = -1;
+    private Spinner spinnerCourses;
+    private NoteInfo mNote;
+    private boolean mIsNewNote;
+    private EditText textNoteTitle;
+    private EditText textNoteText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +38,33 @@ public class NoteActivity extends AppCompatActivity {
         adapterCourses.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCourses.setAdapter(adapterCourses);
 
+        readDisplayStateValues();
 
+        textNoteTitle = findViewById(R.id.text_note_title);
+        textNoteText = findViewById(R.id.text_note_text);
+
+        if(!mIsNewNote)
+            displayNote(spinnerCourses, textNoteText, textNoteTitle);
+
+
+    }
+
+    private void displayNote(Spinner spinnerCourses, EditText textNoteText, EditText textNoteTitle) {
+
+        List<CourseInfo> courses = DataManager.getInstance().getCourses();
+        int courseIndex = courses.indexOf(mNote.getCourse());
+        spinnerCourses.setSelection(courseIndex);
+        textNoteText.setText(mNote.getText());
+        textNoteTitle.setText(mNote.getTitle());
+
+    }
+
+    private void readDisplayStateValues() {
+        Intent intent = getIntent();
+        int position = intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET);
+        mIsNewNote = position == POSITION_NOT_SET;
+        if(!mIsNewNote)
+            mNote = DataManager.getInstance().getNotes().get(position);
     }
 
     @Override
@@ -46,10 +82,30 @@ public class NoteActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_send_mail) {
+            sendEmail();
             return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void sendEmail() {
+
+        CourseInfo course = (CourseInfo) spinnerCourses.getSelectedItem();
+        String subject = textNoteText.getText().toString();
+        String text = "Checkout what i learned in the plural sight \"" +
+                course.getTitle() + "\"\n" + textNoteText.getText().toString();
+
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:"));
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, text);
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        }
+
+
+
     }
 }
