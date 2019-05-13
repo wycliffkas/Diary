@@ -23,6 +23,10 @@ public class NoteActivity extends AppCompatActivity {
     private EditText textNoteTitle;
     private EditText textNoteText;
     private int notePosition;
+    private boolean isCancelling;
+    private String originalNoteCourseId;
+    private String originalNoteTitle;
+    private String originalNoteText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +45,8 @@ public class NoteActivity extends AppCompatActivity {
 
         readDisplayStateValues();
 
+        saveOriginalNoteValues();
+
         textNoteTitle = findViewById(R.id.text_note_title);
         textNoteText = findViewById(R.id.text_note_text);
 
@@ -52,6 +58,14 @@ public class NoteActivity extends AppCompatActivity {
 
     }
 
+    private void saveOriginalNoteValues() {
+        if(mIsNewNote)
+            return;
+        originalNoteCourseId = mNote.getCourse().getCourseId();
+        originalNoteTitle = mNote.getTitle();
+        originalNoteText = mNote.getText();
+    }
+
     private void createNewNote() {
         DataManager dm = DataManager.getInstance();
         notePosition = dm.createNewNote();
@@ -61,7 +75,24 @@ public class NoteActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        saveNote();
+        if(isCancelling){
+            if(mIsNewNote){
+                DataManager.getInstance().removeNote(notePosition);
+            }else {
+                storePreviousValues();
+            }
+
+        }else{
+            saveNote();
+        }
+
+    }
+
+    private void storePreviousValues() {
+        CourseInfo course = DataManager.getInstance().getCourse(originalNoteCourseId);
+        mNote.setCourse(course);
+        mNote.setTitle(originalNoteTitle);
+        mNote.setText(originalNoteText);
     }
 
     private void saveNote() {
@@ -106,6 +137,10 @@ public class NoteActivity extends AppCompatActivity {
         if (id == R.id.action_send_mail) {
             sendEmail();
             return true;
+        } else if(id == R.id.action_cancel){
+            isCancelling = true;
+            finish();
+
         }
 
         return super.onOptionsItemSelected(item);
