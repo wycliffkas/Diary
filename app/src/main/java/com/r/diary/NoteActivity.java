@@ -3,8 +3,10 @@ package com.r.diary;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
@@ -15,7 +17,11 @@ import java.util.List;
 
 
 public class NoteActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
     public static final String NOTE_POSITION = "com.r.diary.POSITION";
+    public static final String ORIGINAL_NOTE_COURSE_ID = "com.r.diary.ORIGINAL_NOTE_COURSE_ID";
+    public static final String ORIGINAL_NOTE_TITLE = "com.r.diary.ORIGINAL_NOTE_TITLE";
+    public static final String ORIGINAL_NOTE_TEXT = "com.r.diary.ORIGINAL_NOTE_TEXT";
     public static final int POSITION_NOT_SET = -1;
     private Spinner spinnerCourses;
     private NoteInfo mNote;
@@ -45,7 +51,12 @@ public class NoteActivity extends AppCompatActivity {
 
         readDisplayStateValues();
 
-        saveOriginalNoteValues();
+        if(savedInstanceState == null){
+            saveOriginalNoteValues();
+        } else {
+            restoreOriginalNoteValues(savedInstanceState);
+        }
+
 
         textNoteTitle = findViewById(R.id.text_note_title);
         textNoteText = findViewById(R.id.text_note_text);
@@ -56,6 +67,13 @@ public class NoteActivity extends AppCompatActivity {
             displayNote(spinnerCourses, textNoteText, textNoteTitle);
         }
 
+
+    }
+
+    private void restoreOriginalNoteValues(Bundle savedInstanceState) {
+        originalNoteCourseId = savedInstanceState.getString(ORIGINAL_NOTE_COURSE_ID);
+        originalNoteTitle = savedInstanceState.getString(ORIGINAL_NOTE_TITLE);
+        originalNoteText = savedInstanceState.getString(ORIGINAL_NOTE_TEXT);
     }
 
     private void saveOriginalNoteValues() {
@@ -95,6 +113,15 @@ public class NoteActivity extends AppCompatActivity {
         mNote.setText(originalNoteText);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString(ORIGINAL_NOTE_COURSE_ID, originalNoteCourseId);
+        outState.putString(ORIGINAL_NOTE_TITLE, originalNoteTitle);
+        outState.putString(ORIGINAL_NOTE_TEXT, originalNoteText);
+
+    }
+
     private void saveNote() {
         mNote.setCourse((CourseInfo) spinnerCourses.getSelectedItem());
         mNote.setTitle(textNoteTitle.getText().toString());
@@ -115,6 +142,7 @@ public class NoteActivity extends AppCompatActivity {
         Intent intent = getIntent();
         int position = intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET);
         mIsNewNote = position == POSITION_NOT_SET;
+
         if(!mIsNewNote)
             mNote = DataManager.getInstance().getNotes().get(position);
     }
