@@ -1,5 +1,6 @@
 package com.r.diary;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
         NoteInfo note = mNotes.get(position);
         holder.textCourse.setText(note.getCourse().getTitle());
         holder.textTitle.setText(note.getTitle());
+        holder.currentPosition = position;
 
     }
 
@@ -41,12 +43,21 @@ public class NoteRecyclerAdapter extends RecyclerView.Adapter<NoteRecyclerAdapte
 
         public final TextView textCourse;
         public final TextView textTitle;
+        public int currentPosition;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textCourse = itemView.findViewById(R.id.text_course);
             textTitle = itemView.findViewById(R.id.text_title);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(v.getContext(), NoteActivity.class);
+                    intent.putExtra(NoteActivity.NOTE_POSITION, currentPosition);
+                    v.getContext().startActivity(intent);
+                }
+            });
 
         }
     }

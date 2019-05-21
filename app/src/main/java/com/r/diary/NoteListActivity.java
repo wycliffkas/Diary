@@ -41,10 +41,12 @@ public class NoteListActivity extends AppCompatActivity {
         intializeDisplayContent();
     }
 
+
+
     @Override
-    protected void onPostResume() {
-        super.onPostResume();
-//        adapterNotes.notifyDataSetChanged();
+    protected void onResume() {
+        super.onResume();
+//        NoteRecyclerAdapter.notifyDataSetChanged();
     }
 
     private void intializeDisplayContent() {
