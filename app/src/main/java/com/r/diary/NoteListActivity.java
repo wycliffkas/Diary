@@ -12,9 +12,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity {
+    private RecyclerView recyclerNotes;
+
 
 //    private ArrayAdapter<NoteInfo> adapterNotes;
 
@@ -63,11 +66,14 @@ public class NoteListActivity extends AppCompatActivity {
 //            }
 //        });
 
-        RecyclerView recyclerNotes  = findViewById(R.id.list_notes);
+        recyclerNotes = findViewById(R.id.list_notes);
         LinearLayoutManager notesLayoutManager = new LinearLayoutManager(this);
         recyclerNotes.setLayoutManager(notesLayoutManager);
 
+        List<NoteInfo> notes = DataManager.getInstance().getNotes();
+        NoteRecyclerAdapter noteRecyclerAdapter = new NoteRecyclerAdapter(notes);
+        recyclerNotes.setAdapter(noteRecyclerAdapter);
+
 
     }
-
 }
