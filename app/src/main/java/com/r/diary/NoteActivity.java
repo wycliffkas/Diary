@@ -169,10 +169,17 @@ public class NoteActivity extends AppCompatActivity {
             isCancelling = true;
             finish();
 
+        } else if(id == R.id.action_next){
+            moveNext();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void moveNext() {
+
+    }
+
 
     private void sendEmail() {
 

@@ -17,9 +17,8 @@ import java.util.List;
 
 public class NoteListActivity extends AppCompatActivity {
     private RecyclerView recyclerNotes;
+    private NoteRecyclerAdapter noteRecyclerAdapter;
 
-
-//    private ArrayAdapter<NoteInfo> adapterNotes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,34 +45,17 @@ public class NoteListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-//        NoteRecyclerAdapter.notifyDataSetChanged();
+        noteRecyclerAdapter.notifyDataSetChanged();
     }
 
     private void intializeDisplayContent() {
-//        final ListView listNotes = findViewById(R.id.list_notes);
-//
-//        List<NoteInfo> notes = DataManager.getInstance().getNotes();
-//
-//        adapterNotes = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, notes);
-//
-//        listNotes.setAdapter(adapterNotes);
-//
-//        listNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent intent = new Intent(NoteListActivity.this, NoteActivity.class);
-//                    NoteInfo note = (NoteInfo) listNotes.getItemAtPosition(position);
-//                intent.putExtra(NoteActivity.NOTE_POSITION, position);
-//                startActivity(intent);
-//            }
-//        });
 
         recyclerNotes = findViewById(R.id.list_notes);
         LinearLayoutManager notesLayoutManager = new LinearLayoutManager(this);
         recyclerNotes.setLayoutManager(notesLayoutManager);
 
         List<NoteInfo> notes = DataManager.getInstance().getNotes();
-        NoteRecyclerAdapter noteRecyclerAdapter = new NoteRecyclerAdapter(notes);
+        noteRecyclerAdapter = new NoteRecyclerAdapter(notes);
         recyclerNotes.setAdapter(noteRecyclerAdapter);
 
 
