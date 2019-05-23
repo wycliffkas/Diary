@@ -33,6 +33,7 @@ public class NoteActivity extends AppCompatActivity {
     private String originalNoteCourseId;
     private String originalNoteTitle;
     private String originalNoteText;
+    private int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,7 @@ public class NoteActivity extends AppCompatActivity {
 
     private void readDisplayStateValues() {
         Intent intent = getIntent();
-        int position = intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET);
+        position = intent.getIntExtra(NOTE_POSITION, POSITION_NOT_SET);
         mIsNewNote = position == POSITION_NOT_SET;
 
         if(!mIsNewNote)
@@ -176,7 +177,21 @@ public class NoteActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        MenuItem item = menu.findItem(R.id.action_next);
+        int lastNoteIndex = DataManager.getInstance().getNotes().size() - 1;
+        item.setEnabled(position < lastNoteIndex);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
     private void moveNext() {
+        saveNote();
+        ++position;
+        mNote = DataManager.getInstance().getNotes().get(position);
+        saveOriginalNoteValues();
+        displayNote(spinnerCourses, textNoteText, textNoteTitle);
+        invalidateOptionsMenu();
 
     }
 
