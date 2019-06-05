@@ -8,4 +8,8 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
+    <string name="note_text_hint">Note Text</string>
+    <string name="title_hint">Title</string>
+    <string name="nav_share_msg">dont you think you have shared enuf</string>
+    <string name="nav_send_msg">Send</string>
 </resources>
