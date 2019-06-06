@@ -23,6 +23,7 @@
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
+        style="@style/AddFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
@@ -36,8 +37,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout2"
-        app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_notes"
