@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Note Keeper</string>
-    <string name="action_settings">Send as Email</string>
+    <string name="action_settings">Settings</string>
     <string name="title_activity_note_list">Note Keeper</string>
     <string name="title_activity_main">Note Keeper</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -12,4 +12,33 @@
     <string name="title_hint">Title</string>
     <string name="nav_share_msg">dont you think you have shared enuf</string>
     <string name="nav_send_msg">Send</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Preference Titles -->
+    <string name="pref_title_display_name">Display Name</string>
+    <string name="pref_default_display_name">Your Name</string>
+
+    <string name="pref_title_email_address">Email Address</string>
+    <string name="pref_default_email_address">Your Email</string>
+
+    <!-- Messages Preferences -->
+    <string name="pref_title_favourite_social">Favourite Social Network</string>
+    <string name="pref_default_favourite_social">http://google.com</string>
+    <string-array name="pref_entries_favourite_social">
+        <item>google</item>
+        <item>facebook</item>
+        <item>twitter</item>
+    </string-array>
+    <string-array name="pref_values_favourite_social">
+        <item>http://google.com</item>
+        <item>http://facebook.com</item>
+        <item>http://twitter.com</item>
+    </string-array>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 </resources>
