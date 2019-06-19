@@ -88,6 +88,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void intializeDisplayContent() {
+        DataManager.loadFromDatabase(mDbOpenHelper);
+
         recyclerItems = findViewById(R.id.list_items);
         layoutManager = new LinearLayoutManager(this);
 
@@ -109,9 +111,6 @@ public class MainActivity extends AppCompatActivity
     private void displayNotes() {
         recyclerItems.setLayoutManager(layoutManager);
         recyclerItems.setAdapter(noteRecyclerAdapter);
-
-        SQLiteDatabase db = mDbOpenHelper.getReadableDatabase();
-
         selectMenuItem(R.id.nav_notes);
     }
 
